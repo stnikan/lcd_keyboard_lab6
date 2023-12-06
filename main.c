@@ -75,27 +75,26 @@ char what_key()
 {
     char c[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
     DDRD |= ((1 << 0) | (1 << 1) | (1 << 2)); // 0 1 2 на выход
-    DDRA &= 0xF0;
-    char my_s;
+    DDRA &= ~0x0F;
+    uint8_t my_s;
     for (uint8_t i = 0; i < 3; i++)
     {
-        PORTD |= (1 << i);
+        PORTD = (1 << i);
+        _delay_ms(1);
         for (uint8_t j = 0; j < 4; j++)
         {
             my_s = PINA & (1 << j);
-            if (my_s == 1)
+            if (my_s != 0)
             {
-                _delay_us(5);
+                _delay_ms(25); //noise cancellation
+                my_s = PINA & (1 << j);
+                if (my_s != 0)
+                {
+                    LCD_cmd((1 << 7) | 0);
+                    LCD_data(c[((i * 3) +j)]);
+                    _delay_us(5);
+                }
             }
-            my_s = PINA & (1 << j);
-            if (my_s == 1)
-            {
-                LCD_cmd((1 << 7) | 0);
-                LCD_data(c[j+i*3]);
-                _delay_us(5);
-            }
-            my_s = 0;
-            break;
         }
         _delay_us(5);
     }
