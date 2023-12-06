@@ -72,7 +72,8 @@ void LCD_data(char data)
 }
 
 char what_key()
-{
+{   
+    char c[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
     DDRD |= ((1 << 0) | (1 << 1) | (1 << 2)); // 0 1 2 на выход
     DDRA &= 0xF0;
     char my_s;
@@ -81,7 +82,14 @@ char what_key()
         PORTD |= (1 << i);
         for (uint8_t j = 0; i < 4; i++)
         {
-            my_s = PINA&(1<<j); 
+            my_s = PINA & (1 << j);
+            if (my_s == 1)
+            {
+                LCD_cmd((1 << 7) | 0);
+                
+                    LCD_data(c[j]);
+                
+            }
         }
     }
 }
@@ -127,51 +135,17 @@ int main(void)
     int8_t u[] = {12, -6, -24, -42, -60};
     int8_t y = 0;
     int8_t T = 3;
-    char str[] = {'Y', '(', 'k', ')', ' ', '=', ' ', 'X'};
+    char str[] = {"   TEST"};
     LCD_cmd((1 << 7) | 0);
     for (i = 0; i < 8; i++)
     {
         LCD_data(str[i]);
-    } // рисуем первую строку
-    LCD_cmd((1 << 7) | 64);
-    for (i = 0; i < 8; i++)
-    {
-        if (str[i] == 'k')
-        {
-            my_f(k);
-        }
-        else if (str[i] == 'X')
-        {
-            my_f(y);
-        }
-        else
-        {
-            LCD_data(str[i]);
-        }
     }
+    // рисуем первую строку
 
     while (1)
     {
 
-        if (k == 0)
-        {
-            y = 0;
-        }
-        LCD_cmd((1 << 7) | 66);
-        my_f(k);
-        LCD_cmd((1 << 7) | 71);
-        n = my_f(y);
-        for (i = 0; i < n; i++)
-        {
-            LCD_data('#');
-        }
-
-        if (k < 5)
-        {
-            y = y + T * (3 * y + (u[k]) / 2 - 5);
-        }
-
-        _delay_ms(1000); //
-        k = (k + 1) % 6;
+        what_key();
     }
 }
