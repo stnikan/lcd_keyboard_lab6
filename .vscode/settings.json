@@ -2,8 +2,8 @@
     "AVR.reporter.arguments": [
         "-A"
     ],
-    "AVR.source.compiler": "C:\\Users\\admin\\avr-gcc-12.1.0_avrdude-7.0-x86-windows\\bin\\avr-gcc.exe",
-    "AVR.programmer.tool": "C:\\Users\\admin\\avr-gcc-12.1.0_avrdude-7.0-x86-windows\\bin\\avrdude.exe",
+    "AVR.source.compiler": "C:\\Users\\stnik\\YandexDisk\\_for vs_code install\\avr-gcc-12.1.0_avrdude-7.0\\bin\\avr-gcc.exe",
+    "AVR.programmer.tool": "C:\\Users\\stnik\\YandexDisk\\_for vs_code install\\avr-gcc-12.1.0_avrdude-7.0\\bin\\avrdude.exe",
     "AVR.source.libraries": [],
     "AVR.device.type": "atmega128a",
     "AVR.device.frequency": 11059200,

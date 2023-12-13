@@ -72,31 +72,25 @@ void LCD_data(char data)
 }
 
 char what_key()
-{
-    char c[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+{   
+    char c[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
     DDRD |= ((1 << 0) | (1 << 1) | (1 << 2)); // 0 1 2 на выход
-    DDRA &= ~0x0F;
-    uint8_t my_s;
+    DDRA &= 0xF0;
+    char my_s;
+    my_s =0;
     for (uint8_t i = 0; i < 3; i++)
     {
-        PORTD = (1 << i);
-        _delay_ms(1);
-        for (uint8_t j = 0; j < 4; j++)
+        PORTD |= (1 << i);
+        for (uint8_t j = 0; i < 4; i++)
         {
             my_s = PINA & (1 << j);
-            if (my_s != 0)
+            if (my_s == 1)
             {
-                _delay_ms(25); //noise cancellation
-                my_s = PINA & (1 << j);
-                if (my_s != 0)
-                {
-                    LCD_cmd((1 << 7) | 0);
-                    LCD_data(c[((i * 3) +j)]);
-                    _delay_us(5);
-                }
+                LCD_cmd((1 << 7) | 0);
+                    LCD_data(c[j+1]);
+                
             }
         }
-        _delay_us(5);
     }
 }
 
