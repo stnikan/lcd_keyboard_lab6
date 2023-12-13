@@ -72,12 +72,15 @@ void LCD_data(char data)
 }
 
 char what_key()
-{   
-    char c[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+{
+    char c[4][3] = {{'3', '2', '1'},
+                  {'6', '5', '4'},
+                  {'9', '8', '7'},
+                  {'#', '0', '*'}};
     DDRD |= ((1 << 0) | (1 << 1) | (1 << 2)); // 0 1 2 на выход
     DDRA &= 0xF0;
     char my_s;
-    my_s =0;
+    my_s = 0;
     for (uint8_t i = 0; i < 3; i++)
     {
         PORTD |= (1 << i);
@@ -87,8 +90,7 @@ char what_key()
             if (my_s == 1)
             {
                 LCD_cmd((1 << 7) | 0);
-                    LCD_data(c[j+1]);
-                
+                LCD_data(c[j][i]);
             }
         }
     }
