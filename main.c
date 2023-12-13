@@ -134,7 +134,6 @@ int main(void)
     uint8_t i;
     uint8_t k = 0;
     int8_t n = 0;
-    int8_t u[] = {12, -6, -24, -42, -60};
     int8_t y = 0;
     int8_t T = 3;
     char str[] = {"   TEST"};
