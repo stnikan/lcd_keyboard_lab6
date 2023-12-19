@@ -3,7 +3,7 @@
         {
             "name": "AVR",
             "intelliSenseMode": "${default}",
-            "compilerPath": "C:\\Users\\stnik\\YandexDisk\\_for vs_code install\\avr-gcc-12.1.0_avrdude-7.0\\bin\\avr-gcc.exe",
+            "compilerPath": "C:\\Users\\admin\\avr-gcc-12.1.0_avrdude-7.0-x86-windows\\bin\\avr-gcc.exe",
             "cStandard": "${default}",
             "cppStandard": "${default}",
             "includePath": [],

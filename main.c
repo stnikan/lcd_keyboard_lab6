@@ -89,60 +89,97 @@ uint8_t what_key()
 
 
 // выводит число со знаком
-//int8_t my_f(int16_t a)
-//{
-//int16_t b;
-//int16_t del = 1;
-//int8_t n = 5;
-//char s;
-//char c[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
-//if (a < 0)
-//{
-//LCD_data('-');
-//}
-//while (a / (del * 10) > 0)
-//{
-//del *= 10;
-//n -= 1;
-//}
-//while (del >= 1)
-//{ // k = цифра моего числа
-//b = a / del;
-//s = c[b];
-//LCD_data(s); // написать символ
-//a -= b * del;
-//del /= 10;
-//}
-//return n;
-//}
+int8_t my_f(int16_t a)
+{
+int16_t b;
+int16_t del = 1;
+int8_t n = 5;
+char s;
+char c[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+if (a < 0)
+{
+LCD_data('-');
+}
+while (a / (del * 10) > 0)
+{
+del *= 10;
+n -= 1;
+}
+while (del >= 1)
+{ // k = цифра моего числа
+b = a / del;
+s = c[b];
+LCD_data(s); // написать символ
+a -= b * del;
+del /= 10;
+}
+return n;
+}
 
 int main(void)
-{
-/* Replace with your application code */
-LCD_init();
-// LCD_cmd((1<<7) |0);
-// LCD_data(str[i])
+    {
+    /* Replace with your application code */
+    LCD_init();
+    // LCD_cmd((1<<7) |0);
+    // LCD_data(str[i])
 
-uint8_t i;
+    uint8_t i;
 
-char str[] = {"   TEST"};
-LCD_cmd((1 << 7) | 0);
-for (i = 0; i < 7; i++)
-{
-LCD_data(str[i]);
-}
-// рисуем первую строку
-uint8_t key = NO_KEY;
-while (1)
-{
+    char str[] = {"aaa+bbb=?"};
+    LCD_cmd((1 << 7) | 0);
+    for (i = 0; i < 9; i++)
+        {
+        LCD_data(str[i]);   
+        }
+    // рисуем первую строку
+    uint8_t key = NO_KEY;
+    LCD_cmd((1<<7) |64);
+    uint16_t a = 0;
+    uint16_t b = 0;
+    uint16_t flag = 0, help;
+        while (1)
+        {
+            do{
+                key = what_key();
+            } while(key == NO_KEY);
 
-	do{
-		key = what_key();
-	} while(key == NO_KEY);
-	LCD_cmd((1<<7) |0);
-	LCD_data(key+'0');
-	while(what_key() != NO_KEY)
-	    continue;
-	//what_key();
-}
-}11
+            if (flag == 0){
+                if (key != 10 && key != 11 && a/100 == 0){
+                a = a*10 + key;
+                LCD_data(key+'0');}
+                else if(key == 11 && a != 0){
+                    flag = 1;
+                    LCD_data('+');
+                }
+                }
+            else if (flag == 1){
+                if (key != 10 && key != 11 && b/100 == 0){
+                b = b*10 + key;
+                LCD_data(key+'0');}
+                else if(key == 10 && b!=0){
+                    flag = 2;
+                    LCD_data('=');
+                    my_f(a+b);
+                    }
+
+                }
+            else if (flag == 2){
+                if(key == 10){
+                    LCD_cmd((1<<7) |64);
+                    for (i = 0; i < 20; i++)
+                        {
+                        LCD_data(' ');   
+                        }
+                    a = 0;
+                    b = 0;
+                    flag = 0;
+                    LCD_cmd((1<<7) |64);
+                }
+            }
+
+            
+            while(what_key() != NO_KEY)
+                continue;
+            //what_key();
+        }
+    }
